@@ -1,6 +1,8 @@
 # Run 
 
-**Run** is a procedural scripting language intended for writing quick programs to automate tasks. Run is designed to be obvious to read, write and run. Much of the philosophy behind the language is based around the idea of simplicity.
+**Run** :runner: is a procedural scripting language intended for writing quick programs to automate tasks. Run is designed to be obvious to read, write and run. Much of the philosophy behind the language is based around the idea of simplicity.
+
+
 
 ## Basic Syntax
 
@@ -14,6 +16,8 @@ print 'Hello World'
 
 The 'Hello World' program above showcases the `print` funtion from the Run Standard Library being called with a single parameter. By default, all types and literals within the Run language will have a default format to be printed with the `print` funtion.
 
+
+
 ### Type System
 
 Run is **dynamically typed** with a **duck type system** meaning that there is no type safety. Declaring variables therefore only comes in two flavours: immutable (constants) and mutable. Immutable variables are declared with the `set` keyword where as mutable variables are declared with the `let` keyword. Once a variable has been declared, it can be reassigned only if is mutable, with a simple `=` operator. 
@@ -26,23 +30,22 @@ let tau = 2 * pi
 Despite the lack of types, Run only has 5 concrete data types. They are `numbers`, `strings`, `booleans`, `lists`, `maps`. 
 
 ```javascript
-let age = 10         # type number
-let weight = 70.23   # type number
+# Numbers
+let age = 10.12932
 
-set message = 'Hello Darling'  # type string
-set response = "Well, Hello!"  # type string (double or single quotes are fine)
+# Strings
+let message = "Run is Fun"
 
-let lovesMe = true        # type boolean
-let lovesMeNot = false    # type boolean
+# Lists
+let languages = "Go", "Python", "Javascript"
 
-let friends = "SHELLEY", "ROWE", "BROWN"               # type list
-    friends = "NOT SHELLEY", "NOT ROWE", "NOT BROWN"   # type list
-    
-let nameToAge = "Jose": 18, "Julio": 19, "Juan": 21  # type map
-
+# Maps
+let languageToMessage = "Go": message, "Python": message, "Javascript": message
 ```
 
 There will be more derived data types developed within the Standard Library such as Records.
+
+
 
 ### Control Structures
 
@@ -75,7 +78,7 @@ for {
 If the `for` loop is passed a comparison or truthy expression then it will only loop for as long as that condition is met.
 
 ```javascript
-let name = getNameFromSomeWhere!
+let name = getName,
 for name is "Gregory" {
     print "Your name is still gregory"
 }
@@ -89,7 +92,9 @@ for name of "Tom", "Dick", "Harry" {
 }
 ```
 
-### funtions
+
+
+### Functions
 
 funtions can be either **named** or **anonymous** and **pure** or **impure**. **Named** funtions are declared with a constant name where as **anonymous** funtions omit the name and act like values. A **pure** funtion is simply one that does not mutate any external state. funtions are always declared with the `fun` keyword.
 
@@ -104,6 +109,8 @@ fun pleaseSayHello() {
 ```
 
 Technically speaking, the funtions above are both procedures since they do not take any arguments or return any values. To return values, the `return` keyword is used.
+
+
 
 ### Entities
 
@@ -122,6 +129,8 @@ Animal fun eat(mass) {
     self.mass = inc(self.mass, mass)
 }
 ```
+
+
 
 ### Modules
 
@@ -144,7 +153,9 @@ print module.calculateArea 10
 
 Standard Library modules are also available through the import keyword. It should be noted that only local modules can be imported if they exist within the same directory, or a lower directory than that of the source file.
 
-## Development
+
+
+## Contributing
 
 The **Run** language doesn't exist yet. It's merely a rumour. If you would like to suggest syntax changes, admendments or even features, get in contact. You can post an issue or PR if you're reading this on GitHub. Bare in mind that ideas will only be taken on board if the core developer aggrees.
 
