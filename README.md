@@ -2,6 +2,18 @@
 
 **Run** :runner: is a procedural scripting language intended for writing quick programs to automate tasks. Run is designed to be obvious to read, write and run. Much of the philosophy behind the language is based around the idea of simplicity.
 
+```javascript
+import maths
+
+entity Circle {
+    radius, centreX, centreY
+}
+
+Circle func calcArea() {
+    return maths.Pi * maths.pow r, 2
+}
+```
+
 
 
 ## Basic Syntax
