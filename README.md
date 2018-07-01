@@ -1,10 +1,6 @@
-<div align="right">
-    <a href="https://gitter.im/runlang">
-        <img src="https://badges.gitter.im/gitterHQ/gitter.png" alt="Go to Gitter">
-    </a>
-</div>
-
 # Run 
+
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/runlang)
 
 **Run** :runner: is a procedural scripting language intended for writing quick programs to automate tasks and to carry out general purpose computation. Run is designed to be obvious to read, write and run.
 
