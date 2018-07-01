@@ -49,7 +49,7 @@ let tau = 2 * pi
 pi = 3.1                    # This most definitely is not
 ```
 
-Despite the lack of types, Run only has 5 concrete data types. They are `numbers`, `strings`, `booleans`, `lists`, `maps`. 
+Despite the lack of types, Run only has 5 concrete data types. They are `numbers`, `strings`, `booleans`, `lists`, `maps`.
 
 ```javascript
 # Numbers
@@ -62,12 +62,12 @@ let message = "Run is Fun"
 let languages = "Go", "Python", "Javascript"
 
 # Maps
-let languageToMessage = "Go": message, "Python": message, "Javascript": message
+let languageToMessage = go: message, python: message, javascript: message
 ```
 
 There will be more derived data types developed within the Standard Library such as Records.
 
-
+`nil` is also a concrete type.
 
 ### Control Structures
 
@@ -147,9 +147,16 @@ entity Animal {
 Entities can also have methods. Strictly speaking, methods aren't tethered to entities like in most other languages. Instead, **Run** provides syntactic sugar whereby funtions can be defined that are automatically passed an instance of an entity. The instance can be reffered to using the `self` keyword. These special method-funtions can also only be called using the dot-syntax.
 
 ```javascript
-Animal fun eat(mass) {
-    self.mass = inc(self.mass, mass)
+Animal fun eat(f) {
+    self.mass = inc(self.mass, 1)
 }
+```
+
+Creating new instances of entities is the same as calling a function named after the entity name. All parameters passed must be in the order that they have been declared within the entity declaration.
+
+```javascript
+let dog = Animal(40, "lupus familiaris", "blue")
+dog.eat()
 ```
 
 
