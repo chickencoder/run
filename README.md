@@ -9,8 +9,8 @@ entity Circle {
     radius
 }
 
-Circle func calcArea() {
-    return maths.Pi * maths.pow r, 2
+Circle func calcArea(self) {
+    return maths.Pi * maths.pow self.radius, 2
 }
 ```
 
@@ -190,12 +190,6 @@ The **Run** language doesn't exist yet. It's merely a rumour. If you would like 
 
 
 
-> Draft 20:08 Sunday 1st July 2018
->
-> Written by Jesse Sibley
-
-
-
 Copyright (c) 2018 Jesse Sibley. All rights reserved.
 
-This document, along with the entire source code for the 'Run' project is licensed under the BSD-3-Clause License. See 'LICENSE' file for more details.
+This document, along with the entire source code for the 'Run' project is licensed under the BSD-3-Clause License. See `LICENSE` file for more details.
