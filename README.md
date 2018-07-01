@@ -1,7 +1,5 @@
 # Run 
 
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/runlang)
-
 **Run** :runner: is a procedural scripting language intended for writing quick programs to automate tasks and to carry out general purpose computation. Run is designed to be obvious to read, write and run.
 
 ```javascript
@@ -16,7 +14,9 @@ Circle func calcArea(self) {
 }
 ```
 
-
+## Getting Involved
+To be apart of the birth of the **Run** language, you can submit PRs, issues or just join the gitter community.
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/runlang)
 
 ## Basic Syntax
 
