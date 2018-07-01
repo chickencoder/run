@@ -14,10 +14,6 @@ Circle func calcArea(self) {
 }
 ```
 
-## Getting Involved
-To be apart of the birth of the **Run** language, you can submit PRs, issues or just join the gitter community.
-[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/runlang)
-
 ## Basic Syntax
 
 The (current) syntax of the Run language is heavily influenced by Go, Python and Javascript.
@@ -207,7 +203,10 @@ Standard Library modules are also available through the import keyword. It shoul
 
 ## Contributing
 
-The **Run** language doesn't exist yet. It's merely a rumour. If you would like to suggest syntax changes, admendments or even features, get in contact. You can post an issue or PR if you're reading this on GitHub. Bare in mind that ideas will only be taken on board if the core developer aggrees.
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/runlang)
+<br>
+
+The **Run** language doesn't exist yet. It's merely a rumour. If you would like to suggest syntax changes, admendments or even features, get in contact. You can post an issue or PR if you're reading this on GitHub or even just join the Gitter. Bare in mind that ideas will only be taken on board if the core developer aggrees.
 
 
 
