@@ -1,5 +1,7 @@
 <div align="right">
-    [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/gitterHQ/gitter)
+    <a href="https://gitter.im/runlang">
+        <img src="https://badges.gitter.im/gitterHQ/gitter.png" alt="Go to Gitter">
+    </a>
 </div>
 
 # Run 
