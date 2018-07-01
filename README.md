@@ -136,7 +136,7 @@ Technically speaking, the funtions above are both procedures since they do not t
 
 ### Entities
 
-**Run** does not support object oriented programming features such as polymorphism or inheritance, however, **Run** does provide an interface for *describing entities*.
+**Run** does not support full object oriented programming, however, **Run** does provide an interface for describing *entities*.
 
 ```javascript
 entity Animal {
@@ -157,6 +157,25 @@ Creating new instances of entities is the same as calling a function named after
 ```javascript
 let dog = Animal(40, "lupus familiaris", "blue")
 dog.eat()
+```
+
+### Protocols
+
+*coming soon*
+
+```javascript
+protocol Shape {
+    Area()
+    Dimensions()
+}
+
+entity Square is Shape {
+    length
+}
+
+Square fun Area(self) {
+    return self.length * self.length
+}
 ```
 
 
