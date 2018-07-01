@@ -10,7 +10,7 @@ entity Circle {
 }
 
 Circle func calcArea(self) {
-    return maths.Pi * maths.pow self.radius, 2
+    return maths.Pi * maths.pow(self.radius, 2)
 }
 ```
 
@@ -21,7 +21,7 @@ The (current) syntax of the Run language is heavily influenced by Go, Python and
 *Note: All code snippet currently use Javascript highlighting*
 
 ```javascript
-print 'Hello World' 
+print("Hello World") 
 ```
 
 The 'Hello World' program above showcases the `print` funtion from the Run Standard Library being called with a single parameter. By default, all types and literals within the Run language will have a default format to be printed with the `print` funtion.
@@ -75,32 +75,26 @@ One of the main control structures within the language is the `If Statement` whi
 let x = 10
 
 if x < 20 {
-    print "Run is fun"
+    print("Run is fun")
 } else {
-    print "Run is not fun"    # This will (obviously) never run
+    print("Run is not fun")    # This will (obviously) never run
 }
-```
-
-It should also be noted at this point that funtions, when called with parameters will only consume the next token in the source unless followed by a comma. funtions can only be called without parameters using the `comma` syntax.
-
-```javascript
-print, # This will print a new line
 ```
 
 The next notable control structure is the `for` statement which acts as both a conditional loop (often known as a while loop), and an iterative loop where by it can iterate over only `map` and `list` concrete types; with a special syntax. If no expression is provided to the `for` loop, just like in the Go Programming Language, the code will loop forever.
 
 ```Javascript
 for {
-   print "Forever" 
+   print("Forever")
 }
 ```
 
 If the `for` loop is passed a comparison or truthy expression then it will only loop for as long as that condition is met.
 
 ```javascript
-let name = getName,
+let name = getName()
 for name is "Gregory" {
-    print "Your name is still gregory"
+    print("Your name is still gregory")
 }
 ```
 
@@ -108,7 +102,7 @@ Finally, if the `for` loop is passed an `of-iterator` expression then the `for` 
 
 ```javascript
 for name of "Tom", "Dick", "Harry" {
-    print concat "Hello", name
+    print(concat("Hello", name))
 }
 ```
 
@@ -120,11 +114,11 @@ funtions can be either **named** or **anonymous** and **pure** or **impure**. **
 
 ```javascript
 fun sayHello() {
-    print "No."
+    print("No.")
 }
 
 fun pleaseSayHello() {
-    print "Oh fine. Hello"
+    print("Oh fine. Hello")
 }
 ```
 
@@ -194,7 +188,7 @@ export calculateArea
 ```javascript
 # main.run
 import module
-print module.calculateArea 10
+print module.calculateArea(10)
 ```
 
 Standard Library modules are also available through the import keyword. It should be noted that only local modules can be imported if they exist within the same directory, or a lower directory than that of the source file.
@@ -204,7 +198,6 @@ Standard Library modules are also available through the import keyword. It shoul
 ## Contributing
 
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/runlang)
-<br>
 
 The **Run** language doesn't exist yet. It's merely a rumour. If you would like to suggest syntax changes, admendments or even features, get in contact. You can post an issue or PR if you're reading this on GitHub or even just join the Gitter. Bare in mind that ideas will only be taken on board if the core developer aggrees.
 
