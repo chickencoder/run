@@ -28,6 +28,12 @@ print 'Hello World'
 
 The 'Hello World' program above showcases the `print` funtion from the Run Standard Library being called with a single parameter. By default, all types and literals within the Run language will have a default format to be printed with the `print` funtion.
 
+Here are some things to bare in mind whilst writing **Run** code...
+
+- Whitespace never matters
+- Source programs are all UTF8
+- Identifiers can be any valid UTF8 sequence
+
 
 
 ### Type System
@@ -35,8 +41,12 @@ The 'Hello World' program above showcases the `print` funtion from the Run Stand
 Run is **dynamically typed** with a **duck type system** meaning that there is no type safety. Declaring variables therefore only comes in two flavours: immutable (constants) and mutable. Immutable variables are declared with the `set` keyword where as mutable variables are declared with the `let` keyword. Once a variable has been declared, it can be reassigned only if is mutable, with a simple `=` operator. 
 
 ```javascript
-set pi = 3.14159
+set pi = 3.141592654
+
 let tau = 2 * pi
+    tau = 6.283185307       # This is perfectly allowed
+
+pi = 3.1                    # This most definitely is not
 ```
 
 Despite the lack of types, Run only has 5 concrete data types. They are `numbers`, `strings`, `booleans`, `lists`, `maps`. 
@@ -69,7 +79,7 @@ let x = 10
 if x < 20 {
     print "Run is fun"
 } else {
-    print "Run is not fun"
+    print "Run is not fun"    # This will (obviously) never run
 }
 ```
 
@@ -180,3 +190,5 @@ The **Run** language doesn't exist yet. It's merely a rumour. If you would like 
 
 
 Copyright (c) 2018 Jesse Sibley. All rights reserved.
+
+This document, along with the entire source code for the 'Run' project is licensed under the BSD-3-Clause License. See 'LICENSE' file for more details.
