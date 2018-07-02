@@ -18,7 +18,7 @@ Circle func calcArea(self) {
 
 The (current) syntax of the Run language is heavily influenced by Go, Python and Javascript.
 
-*Note: All code snippet currently use Javascript highlighting*
+*Note: All code snippet currently use Javascript highlighting. Therefore some highlight may not look correct.*
 
 ```javascript
 print("Hello World") 
@@ -40,11 +40,10 @@ Run is **dynamically typed** with a **duck type system** meaning that there is n
 
 ```javascript
 set pi = 3.141592654
+    pi = 3.1                # This is not allowed
 
 let tau = 2 * pi
-    tau = 6.283185307       # This is perfectly allowed
-
-pi = 3.1                    # This most definitely is not
+    tau = 6.283185307       # This is allowed
 ```
 
 Despite the lack of types, Run only has 5 concrete data types. They are `numbers`, `strings`, `booleans`, `lists`, `maps`.
