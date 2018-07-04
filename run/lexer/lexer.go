@@ -4,20 +4,3 @@
 // See LICENSE file for more details.
 
 package lexer
-
-type TokenType int
-
-const (
-	StringToken TokenType = iota
-	IdentToken
-
-	EOFRune    rune      = -1
-	EmptyToken TokenType = 0
-)
-
-type Token struct {
-	Type  TokenType
-	Value string
-	Start int
-	End   int
-}

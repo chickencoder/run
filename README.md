@@ -56,10 +56,10 @@ let age = 10.12932
 let message = "Run is Fun"
 
 # Lists
-let languages = "Go", "Python", "Javascript"
+let languages = [ "Go", "Python", "Javascript" ]
 
 # Maps
-let languageToMessage = go: message, python: message, javascript: message
+let languageToMessage = { go: message, python: message, javascript: message }
 ```
 
 There will be more derived data types developed within the Standard Library such as Records.
@@ -100,7 +100,8 @@ for name is "Gregory" {
 Finally, if the `for` loop is passed an `of-iterator` expression then the `for` loop will iterate over a concrete collection type by assigning the mutable variable provided each time to the current item in the collection.
 
 ```javascript
-for name of "Tom", "Dick", "Harry" {
+let names = ["Tom", "Dick", "Harry"]
+for name of names {
     print(concat("Hello", name))
 }
 ```
@@ -149,27 +150,6 @@ Creating new instances of entities is the same as calling a function named after
 let dog = Animal(40, "lupus familiaris", "blue")
 dog.eat()
 ```
-
-### Protocols
-
-*coming soon*
-
-```javascript
-protocol Shape {
-    Area()
-    Dimensions()
-}
-
-entity Square is Shape {
-    length
-}
-
-Square fun Area(self) {
-    return self.length * self.length
-}
-```
-
-
 
 ### Modules
 

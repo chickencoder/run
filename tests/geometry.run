@@ -1,0 +1,35 @@
+# geometry
+
+import maths
+
+entity Geometry {
+    x, y
+}
+
+entity Square is Geometry {
+    length
+}
+
+entity Circle is Geometry {
+    radius
+}
+
+Square fun Area(self) {
+    return self.length * self.length
+}
+
+Circle fun Area() {
+    return maths.Pi * self.radius * self.radius
+}
+
+fun main() {
+    let squares = [
+        Square(10), Square(20), Square(40)
+    ]
+
+    for square of squares {
+        print(space("length", square.length))
+        print(space("area", square.Area()))
+        print()
+    }
+}
