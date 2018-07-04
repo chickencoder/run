@@ -5,19 +5,66 @@
 
 package lexer
 
+import "fmt"
+
+// TokenType is used to represent the nature of a token
 type TokenType int
 
+// Token Constants are TokenType
 const (
 	StringToken TokenType = iota
-	IdentToken
+	NumberToken
+	BooleanToken
 
-	EOFRune    rune      = -1
-	EmptyToken TokenType = 0
+	IdentifierToken
+	KeywordToken
+
+	LeftParenToken
+	RightParenToken
+
+	LeftBraceToken
+	RightBraceToken
+
+	LeftSquareToken
+	RightSquareToken
+
+	CommaToken
+	DotToken
+	MinusToken
+	PlusToken
+	SlashToken
+	StartToken
+
+	BangToken
+	BangEqualToken
+	EqualToken
+	EqualEqualToken
+	GreaterToken
+	GreaterEqualToken
+	LessToken
+	LessEqualToken
+
+	EOF
 )
 
+// Token represents a lexeme within the lexer
 type Token struct {
 	Type  TokenType
 	Value string
 	Start int
 	End   int
+}
+
+// NewToken returns a new token
+func NewToken(typ TokenType, val string, start int, end int) Token {
+	return Token{
+		typ,
+		val,
+		start,
+		end,
+	}
+}
+
+func (t Token) String() string {
+	return fmt.Sprintf("[%d:%d] %q", t.Start, t.End, t.Value)
 }
