@@ -1,8 +1,16 @@
 package main
 
-import "github.com/chickencoder/runlang/scanner"
+import (
+	"github.com/chickencoder/run/vm"
+)
 
 func main() {
-	scanner := scanner.NewScanner("Hello Run")
-	scanner.Next()
+	program := []vm.Instruction{
+		vm.Const, vm.NewOperand(10.0, "number"),
+		vm.Const, vm.NewOperand(20.0, "number"),
+		vm.Add,
+		vm.Halt,
+	}
+	runner := vm.NewRunner(program, 5, 0, true)
+	runner.Run()
 }
