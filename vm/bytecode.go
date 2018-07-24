@@ -11,6 +11,8 @@ var Instructions = []string{
 	"pop",
 	"add",
 	"sub",
+	"mul",
+	"div",
 	"and",
 	"or",
 	"xor",
@@ -20,6 +22,8 @@ var Instructions = []string{
 	"gt",
 	"gte",
 	"goto",
+	"call",
+	"ret",
 }
 
 // Instruction declarations
@@ -50,8 +54,7 @@ const (
 	Goto
 
 	// Function Instructions
-	LoadArg // n arg
-	Call    // location, n args
+	Call // location, n args
 	Return
 )
 

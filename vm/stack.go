@@ -34,6 +34,12 @@ func (s *Stack) Pop() Value {
 	return v
 }
 
+// Peek returns the item on the top of the stack
+// without popping it off
+func (s *Stack) Peek() Value {
+	return s.data[s.pointer]
+}
+
 // Store takes an address, pops item off stack then stores
 // it into local memory (heap growing up the stack)
 func (s *Stack) Store(address Operand) {

@@ -2,12 +2,12 @@ package vm
 
 import (
 	"fmt"
-	"strconv"
 )
 
 // Runner represents an instance of the Run Virtual Machine
 type Runner struct {
 	ip      int
+	fp      int
 	stack   *Stack
 	globals *Stack
 	program []Instruction
@@ -125,6 +125,29 @@ loop:
 		case Goto:
 			addr := r.nextOperand()
 			r.ip = int(addr.Value.(float64))
+		case Call:
+			// args are expected to be on the stack already
+			addr := r.nextOperand()
+			nargs := r.nextOperand()
+			r.stack.Push(nargs.Value.(float64))
+			r.stack.Push(float64(r.fp))
+			r.stack.Push(float64(r.ip))
+			r.fp = r.stack.pointer // fp points to the return address on the stack
+			r.ip = int(addr.Value.(float64))
+		case Return:
+			retVal := r.stack.Pop()
+			r.stack.pointer = r.fp
+			r.ip = int(r.stack.Pop().(float64))
+			r.fp = int(r.stack.Pop().(float64))
+			nargs := int(r.stack.Pop().(float64))
+
+			// Pop off all args
+			for i := 0; i < nargs; i++ {
+				r.stack.Pop()
+			}
+
+			// Leave result on stack
+			r.stack.Push(retVal)
 		}
 
 		if r.trace {
@@ -133,7 +156,7 @@ loop:
 			if out != "" {
 				fmt.Printf("%04d: ", r.ip)
 				fmt.Print(instr.Display())
-				fmt.Printf("\tstack=%v \t(%s)\n", r.stack.data, strconv.Itoa(r.stack.pointer))
+				fmt.Printf("\tstack=%v \t(%v)\n", r.stack.data, r.stack.Peek())
 			}
 
 			// Print stack frame
