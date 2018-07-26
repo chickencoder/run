@@ -1,5 +1,10 @@
 package vm
 
+import "fmt"
+
+// Opcode represents the directive of a bytecode instruction
+type Opcode int
+
 // Instructions maps Opcode ints to instruction strings
 var Instructions = []string{
 	"halt",
@@ -22,6 +27,7 @@ var Instructions = []string{
 	"gt",
 	"gte",
 	"goto",
+	"out", // temporary instruction
 	"call",
 	"ret",
 }
@@ -53,46 +59,54 @@ const (
 	IfGreaterThanOrEqual
 	Goto
 
+	Out // Temporary instruction for debugging purposes
+
 	// Function Instructions
 	Call // location, n args
 	Return
 )
 
-// Opcode represents the directive of a bytecode instruction
-type Opcode int
-
-// Operand represents a stack value
-type Operand struct {
-	Value interface{}
-	Type  string
+// Instruction is an Opcode and optional Operand(s)
+type Instruction struct {
+	Code     Opcode
+	Operands []Value
+	Index    int
 }
 
-// NewOperand returns Operand instance
-func NewOperand(val interface{}, typ string) Operand {
-	return Operand{
-		Value: val,
-		Type:  typ,
+// NewInstruction returns reference to a Instruction
+func NewInstruction(op Opcode, ops []Value) *Instruction {
+	return &Instruction{
+		Code:     op,
+		Operands: ops,
+		Index:    0,
 	}
 }
 
-// Instruction represents a printable Opcode or Operand
-type Instruction interface {
-	Display() string
+// Display returns a printed string of an instruction
+func (i *Instruction) Display() string {
+	line := Instructions[i.Code]
+	if len(i.Operands) < 1 {
+		line += "\t\t"
+		return line
+	} else if len(i.Operands) == 1 {
+		line += "\t"
+	}
+
+	for _, op := range i.Operands {
+		line += "\t"
+		if op.Kind == StringValue {
+			line += op.Content.(string)
+		} else if op.Kind == NumberValue {
+			line += fmt.Sprintf("%.2f", op.Content.(float64))
+		}
+	}
+
+	return line
 }
 
-// Display method implements Instruction.Print for Opcodes
-func (o Opcode) Display() string {
-	return Instructions[o]
-}
-
-// Display method implements Instruction.Print for Operators
-func (o Operand) Display() string {
-	// if o.Type == "string" {
-	// 	return o.Value.(string)
-	// } else if o.Type == "number" {
-	// 	num := o.Value.(float64)
-	// 	return strconv.FormatFloat(num, 'f', 6, 64)
-	// }
-	// return "undefined"
-	return ""
+// NextOperand returns the next operand within the instruction
+func (i *Instruction) NextOperand() Value {
+	val := i.Operands[i.Index]
+	i.Index++
+	return val
 }
