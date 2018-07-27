@@ -27,7 +27,7 @@ var Instructions = []string{
 	"gt",
 	"gte",
 	"goto",
-	"out", // temporary instruction
+	"print", // temporary instruction
 	"call",
 	"ret",
 }
@@ -59,7 +59,7 @@ const (
 	IfGreaterThanOrEqual
 	Goto
 
-	Out // Temporary instruction for debugging purposes
+	Print // Temporary instruction for debugging purposes
 
 	// Function Instructions
 	Call // location, n args

@@ -366,6 +366,10 @@ loop:
 			r.stack.Push(retVal)
 			r.ip++
 
+		case Print:
+			fmt.Println(r.stack.Pop())
+			r.ip++
+
 		default:
 			fmt.Printf("Unrecognised opcode %d\n", instr.Code)
 			break loop
