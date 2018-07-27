@@ -106,7 +106,10 @@ func (i *Instruction) Display() string {
 
 // NextOperand returns the next operand within the instruction
 func (i *Instruction) NextOperand() Value {
-	val := i.Operands[i.Index]
-	i.Index++
-	return val
+	if i.Index < len(i.Operands) {
+		val := i.Operands[i.Index]
+		i.Index++
+		return val
+	}
+	return Nil
 }

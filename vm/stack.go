@@ -6,8 +6,15 @@ import "fmt"
 // typed value on the stack
 type ValueKind int
 
+var ValueKinds = []string{
+	"nil",
+	"number",
+	"string",
+}
+
 const (
-	NumberValue ValueKind = iota
+	NilValue ValueKind = iota
+	NumberValue
 	StringValue
 )
 
@@ -15,6 +22,12 @@ const (
 type Value struct {
 	Kind    ValueKind
 	Content interface{}
+}
+
+// Nil represents global nil value
+var Nil = Value{
+	Kind:    NilValue,
+	Content: nil,
 }
 
 func (v Value) String() string {
@@ -45,22 +58,27 @@ func NewStack(size int) *Stack {
 
 // Push puts an item on the top of the stack
 // Stack grows downwards
-func (s *Stack) Push(item Value) {
+func (s *Stack) Push(item Value) Value {
 	s.pointer++
-	s.data[s.pointer] = item
+	if s.pointer < len(s.data) {
+		s.data[s.pointer] = item
+		return item
+	}
+	return Nil
 }
 
 // Pop removes an item from the top of the stack
 // and then returns a Value type
 func (s *Stack) Pop() Value {
-	v := s.data[s.pointer]
-	s.pointer--
 
 	// TODO: Throw underflow error
 	// Don't allow stack underflow
-	if s.pointer < 0 {
-		s.pointer = 0
+	if s.pointer < 0 || len(s.data) == 0 {
+		return Nil
 	}
+
+	v := s.data[s.pointer]
+	s.pointer--
 	return v
 }
 
@@ -73,20 +91,27 @@ func (s *Stack) Peek() Value {
 
 // Store takes an address, pops item off stack then stores
 // it into local memory (heap growing up the stack)
-func (s *Stack) Store(address Value) {
-	// TODO: Throw errors
+func (s *Stack) Store(address Value) Value {
 	item := s.Pop()
+	if item == Nil {
+		return Nil
+	}
+
 	addr := int(address.Content.(float64))
 	s.data[len(s.data)-addr-1] = item
+	return item
 }
 
 // Fetch looks up an address in memory then pushes
 // the value at the address onto the stack
-func (s *Stack) Fetch(address Value) {
-	// TODO: throw errors
+func (s *Stack) Fetch(address Value) Value {
 	addr := int(address.Content.(float64))
-	item := s.data[len(s.data)-addr-1]
-	s.Push(item)
+	if addr < len(s.data) {
+		item := s.data[len(s.data)-addr-1]
+		s.Push(item)
+		return item
+	}
+	return Nil
 }
 
 // func (s *Stack) String() string {
