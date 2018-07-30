@@ -14,6 +14,34 @@ Circle func calcArea(self) {
 }
 ```
 
+## Development
+Run is under active development. Currently, there is no working interpreter. The project aims to provide a functioning (although likely bug ridden) interpreter as of version 0.1.
+
+- CLI
+    1. Add several new commands
+    2. Add pretty printed colours
+    3. Write tests
+
+- Scanner
+    1. Define lexeme types
+    2. Add pretty printed colours
+    3. Write tests
+
+- Parser
+    1. Define AST structures
+    2. Implement full language grammar
+    3. Write tests
+
+- Code Generator
+    1. Write VM interface
+    2. Write traversal code
+    3. Write tests
+
+- Virtual Machine
+    1. Refactor Error Sending
+    2. Document code & write test
+    3. Implement a larger instruction set
+
 ## Basic Syntax
 
 The (current) syntax of the Run language is heavily influenced by Go, Python and .

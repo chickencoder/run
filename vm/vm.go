@@ -29,8 +29,8 @@ func NewRunner(program []*Instruction, size int, main int, trace bool) *Runner {
 }
 
 // Throw will display a runtime error message
-func (r *Runner) Throw(kind ErrorKind, message string) {
-	fmt.Println(Errors[kind] + ": " + message)
+func Throw(kind ErrorKind, message string) {
+	fmt.Printf("%s: %s\n", Errors[kind], message)
 	os.Exit(1)
 }
 
@@ -47,47 +47,54 @@ loop:
 		case Const:
 			operand := instr.NextOperand()
 			if operand == Nil {
-				r.Throw(CodeError, fmt.Sprintf("expected operand from %s", instr.Display()))
+				Throw(CodeError, fmt.Sprintf("expected operand from %s", instr.Display()))
 			}
-			r.stack.Push(operand)
+			item := r.stack.Push(operand)
+			if item == Nil {
+				Throw(StackError, "cannot add because stack is full")
+			}
 			r.ip++
 
 		case Store:
 			address := instr.NextOperand()
 			if address == Nil {
-				r.Throw(CodeError, fmt.Sprintf("expected operand from %s", instr.Display()))
+				Throw(CodeError, fmt.Sprintf("expected operand from %s", instr.Display()))
 			}
+			// Check for nil value
 			r.stack.Store(address)
 			r.ip++
 
 		case Fetch:
 			address := instr.NextOperand()
 			if address == Nil {
-				r.Throw(CodeError, fmt.Sprintf("expected operand from %s", instr.Display()))
+				Throw(CodeError, fmt.Sprintf("expected operand from %s", instr.Display()))
 			}
+			// Check for nil value
 			r.stack.Fetch(address)
 			r.ip++
 
 		case GStore:
 			address := instr.NextOperand()
 			if address == Nil {
-				r.Throw(CodeError, fmt.Sprintf("expected operand from %s", instr.Display()))
+				Throw(CodeError, fmt.Sprintf("expected operand from %s", instr.Display()))
 			}
+			// Check for nil value
 			r.globals.Store(address)
 			r.ip++
 
 		case GFetch:
 			address := instr.NextOperand()
 			if address == Nil {
-				r.Throw(CodeError, fmt.Sprintf("expected operand from %s", instr.Display()))
+				Throw(CodeError, fmt.Sprintf("expected operand from %s", instr.Display()))
 			}
+			// Check for nil value
 			r.globals.Fetch(address)
 			r.ip++
 
 		case Pop:
 			item := r.stack.Pop()
 			if item == Nil {
-				r.Throw(StackError, "cannot pop because stack is empty")
+				Throw(StackError, "cannot pop because stack is empty")
 			}
 			r.ip++
 
@@ -96,7 +103,7 @@ loop:
 			b := r.stack.Pop()
 
 			if a == Nil || b == Nil {
-				r.Throw(StackError, "cannot add because stack is empty")
+				Throw(StackError, "cannot add because stack is empty")
 			}
 
 			if a.Kind == NumberValue && b.Kind == NumberValue {
@@ -104,9 +111,12 @@ loop:
 					Kind:    NumberValue,
 					Content: a.Content.(float64) + b.Content.(float64),
 				}
-				r.stack.Push(result)
+				item := r.stack.Push(result)
+				if item == Nil {
+					Throw(StackError, "cannot add because stack is full")
+				}
 			} else {
-				r.Throw(ValueError, fmt.Sprintf("cannot add %s value to %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
+				Throw(ValueError, fmt.Sprintf("cannot add %s value to %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
 			}
 			r.ip++
 
@@ -115,7 +125,7 @@ loop:
 			b := r.stack.Pop()
 
 			if a == Nil || b == Nil {
-				r.Throw(StackError, "cannot sub because stack is empty")
+				Throw(StackError, "cannot sub because stack is empty")
 			}
 
 			if a.Kind == NumberValue && b.Kind == NumberValue {
@@ -123,10 +133,13 @@ loop:
 					Kind:    NumberValue,
 					Content: b.Content.(float64) - a.Content.(float64),
 				}
-				r.stack.Push(result)
+				item := r.stack.Push(result)
+				if item == Nil {
+					Throw(StackError, "cannot add because stack is full")
+				}
 				r.ip++
 			} else {
-				r.Throw(ValueError, fmt.Sprintf("cannot sub %s value from %s value", ValueKinds[b.Kind], ValueKinds[a.Kind]))
+				Throw(ValueError, fmt.Sprintf("cannot sub %s value from %s value", ValueKinds[b.Kind], ValueKinds[a.Kind]))
 			}
 
 		case Mul:
@@ -134,7 +147,7 @@ loop:
 			b := r.stack.Pop()
 
 			if a == Nil || b == Nil {
-				r.Throw(StackError, "cannot mul because stack is empty")
+				Throw(StackError, "cannot mul because stack is empty")
 			}
 
 			if a.Kind == NumberValue && b.Kind == NumberValue {
@@ -142,10 +155,13 @@ loop:
 					Kind:    NumberValue,
 					Content: a.Content.(float64) * b.Content.(float64),
 				}
-				r.stack.Push(result)
+				item := r.stack.Push(result)
+				if item == Nil {
+					Throw(StackError, "cannot add because stack is full")
+				}
 				r.ip++
 			} else {
-				r.Throw(ValueError, fmt.Sprintf("cannot mul %s value with %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
+				Throw(ValueError, fmt.Sprintf("cannot mul %s value with %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
 			}
 
 		case Div:
@@ -153,7 +169,7 @@ loop:
 			b := r.stack.Pop()
 
 			if a == Nil || b == Nil {
-				r.Throw(StackError, "cannot div because stack is empty")
+				Throw(StackError, "cannot div because stack is empty")
 			}
 
 			if a.Kind == NumberValue && b.Kind == NumberValue {
@@ -161,10 +177,13 @@ loop:
 					Kind:    NumberValue,
 					Content: b.Content.(float64) / a.Content.(float64),
 				}
-				r.stack.Push(result)
+				item := r.stack.Push(result)
+				if item == Nil {
+					Throw(StackError, "cannot add because stack is full")
+				}
 				r.ip++
 			} else {
-				r.Throw(ValueError, fmt.Sprintf("cannot div %s value by %s value", ValueKinds[b.Kind], ValueKinds[a.Kind]))
+				Throw(ValueError, fmt.Sprintf("cannot div %s value by %s value", ValueKinds[b.Kind], ValueKinds[a.Kind]))
 			}
 
 		case And:
@@ -172,7 +191,7 @@ loop:
 			b := r.stack.Pop()
 
 			if a == Nil || b == Nil {
-				r.Throw(StackError, "cannot and because stack is empty")
+				Throw(StackError, "cannot and because stack is empty")
 			}
 
 			if a.Kind == NumberValue && b.Kind == NumberValue {
@@ -180,10 +199,13 @@ loop:
 					Kind:    NumberValue,
 					Content: int(a.Content.(float64)) & int(b.Content.(float64)),
 				}
-				r.stack.Push(result)
+				item := r.stack.Push(result)
+				if item == Nil {
+					Throw(StackError, "cannot add because stack is full")
+				}
 				r.ip++
 			} else {
-				r.Throw(ValueError, fmt.Sprintf("cannot and %s value with %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
+				Throw(ValueError, fmt.Sprintf("cannot and %s value with %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
 			}
 
 		case Or:
@@ -191,7 +213,7 @@ loop:
 			b := r.stack.Pop()
 
 			if a == Nil || b == Nil {
-				r.Throw(StackError, "cannot or because stack is empty")
+				Throw(StackError, "cannot or because stack is empty")
 			}
 
 			if a.Kind == NumberValue && b.Kind == NumberValue {
@@ -199,10 +221,13 @@ loop:
 					Kind:    NumberValue,
 					Content: int(a.Content.(float64)) | int(b.Content.(float64)),
 				}
-				r.stack.Push(result)
+				item := r.stack.Push(result)
+				if item == Nil {
+					Throw(StackError, "cannot add because stack is full")
+				}
 				r.ip++
 			} else {
-				r.Throw(ValueError, fmt.Sprintf("cannot or %s value with %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
+				Throw(ValueError, fmt.Sprintf("cannot or %s value with %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
 			}
 
 		case Xor:
@@ -210,7 +235,7 @@ loop:
 			b := r.stack.Pop()
 
 			if a == Nil || b == Nil {
-				r.Throw(StackError, "cannot xor because stack is empty")
+				Throw(StackError, "cannot xor because stack is empty")
 			}
 
 			if a.Kind == NumberValue && b.Kind == NumberValue {
@@ -218,10 +243,13 @@ loop:
 					Kind:    NumberValue,
 					Content: int(a.Content.(float64)) ^ int(b.Content.(float64)),
 				}
-				r.stack.Push(result)
+				item := r.stack.Push(result)
+				if item == Nil {
+					Throw(StackError, "cannot add because stack is full")
+				}
 				r.ip++
 			} else {
-				r.Throw(ValueError, fmt.Sprintf("cannot xor %s value with %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
+				Throw(ValueError, fmt.Sprintf("cannot xor %s value with %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
 			}
 
 		case IfEqual:
@@ -230,7 +258,7 @@ loop:
 			b := r.stack.Pop()
 
 			if a == Nil || b == Nil {
-				r.Throw(StackError, "cannot make comparison because stack is empty")
+				Throw(StackError, "cannot make comparison because stack is empty")
 			}
 
 			if a.Kind == NumberValue && b.Kind == NumberValue {
@@ -242,7 +270,7 @@ loop:
 					r.ip = int(addr.Content.(float64))
 				}
 			} else {
-				r.Throw(ValueError, fmt.Sprintf("cannot make comparison between %s value and %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
+				Throw(ValueError, fmt.Sprintf("cannot make comparison between %s value and %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
 			}
 
 		case IfLessThan:
@@ -251,7 +279,7 @@ loop:
 			b := r.stack.Pop()
 
 			if a == Nil || b == Nil {
-				r.Throw(StackError, "cannot make comparison because stack is empty")
+				Throw(StackError, "cannot make comparison because stack is empty")
 			}
 
 			if a.Kind == NumberValue && b.Kind == NumberValue {
@@ -259,7 +287,7 @@ loop:
 					r.ip = int(addr.Content.(float64))
 				}
 			} else {
-				r.Throw(ValueError, fmt.Sprintf("cannot make comparison between %s value and %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
+				Throw(ValueError, fmt.Sprintf("cannot make comparison between %s value and %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
 			}
 
 		case IfLessThanOrEqual:
@@ -268,7 +296,7 @@ loop:
 			b := r.stack.Pop()
 
 			if a == Nil || b == Nil {
-				r.Throw(StackError, "cannot make comparison because stack is empty")
+				Throw(StackError, "cannot make comparison because stack is empty")
 			}
 
 			if a.Kind == NumberValue && b.Kind == NumberValue {
@@ -276,7 +304,7 @@ loop:
 					r.ip = int(addr.Content.(float64))
 				}
 			} else {
-				r.Throw(ValueError, fmt.Sprintf("cannot make comparison between %s value and %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
+				Throw(ValueError, fmt.Sprintf("cannot make comparison between %s value and %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
 			}
 
 		case IfGreaterThan:
@@ -285,7 +313,7 @@ loop:
 			b := r.stack.Pop()
 
 			if a == Nil || b == Nil {
-				r.Throw(StackError, "cannot make comparison because stack is empty")
+				Throw(StackError, "cannot make comparison because stack is empty")
 			}
 
 			if a.Kind == NumberValue && b.Kind == NumberValue {
@@ -293,7 +321,7 @@ loop:
 					r.ip = int(addr.Content.(float64))
 				}
 			} else {
-				r.Throw(ValueError, fmt.Sprintf("cannot make comparison between %s value and %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
+				Throw(ValueError, fmt.Sprintf("cannot make comparison between %s value and %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
 			}
 
 		case IfGreaterThanOrEqual:
@@ -302,7 +330,7 @@ loop:
 			b := r.stack.Pop()
 
 			if a == Nil || b == Nil {
-				r.Throw(StackError, "cannot make comparison because stack is empty")
+				Throw(StackError, "cannot make comparison because stack is empty")
 			}
 
 			if a.Kind == NumberValue && b.Kind == NumberValue {
@@ -310,13 +338,13 @@ loop:
 					r.ip = int(addr.Content.(float64))
 				}
 			} else {
-				r.Throw(ValueError, fmt.Sprintf("cannot make comparison between %s value and %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
+				Throw(ValueError, fmt.Sprintf("cannot make comparison between %s value and %s value", ValueKinds[a.Kind], ValueKinds[b.Kind]))
 			}
 
 		case Goto:
 			addr := instr.NextOperand()
 			if addr == Nil {
-				r.Throw(CodeError, fmt.Sprintf("expected operand from %s", instr.Display()))
+				Throw(CodeError, fmt.Sprintf("expected operand from %s", instr.Display()))
 			}
 			r.ip = int(addr.Content.(float64))
 
@@ -327,7 +355,7 @@ loop:
 			nargs := instr.NextOperand()
 
 			if addr == Nil || nargs == Nil {
-				r.Throw(CodeError, fmt.Sprintf("expected address and nargs operands from %s", instr.Display()))
+				Throw(CodeError, fmt.Sprintf("expected address and nargs operands from %s", instr.Display()))
 			}
 
 			fpVal := Value{
@@ -349,7 +377,7 @@ loop:
 			// TODO: add error checking
 			retVal := r.stack.Pop()
 			if retVal == Nil {
-				r.Throw(CodeError, "no value returned from function")
+				Throw(CodeError, "no value returned from function")
 			}
 
 			r.stack.pointer = r.fp
@@ -367,7 +395,7 @@ loop:
 			r.ip++
 
 		case Print:
-			fmt.Println(r.stack.Pop())
+			fmt.Println(r.stack.Peek())
 			r.ip++
 
 		default:
@@ -380,7 +408,8 @@ loop:
 			if out != "" {
 				fmt.Printf("%04d ", r.ip)
 				fmt.Print(instr.Display())
-				fmt.Printf("\tstack %v \t(%v)\n", r.stack.data, r.stack.Peek())
+				fmt.Printf("\tstack %v \t(%v)", r.stack.data, r.stack.Peek())
+				fmt.Printf("\t*%d\n", r.stack.pointer)
 			}
 		}
 	}

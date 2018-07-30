@@ -10,9 +10,12 @@ import (
 )
 
 func main() {
+	main := flag.Int("main", 0, "Main entry point for program")
 	trace := flag.Bool("trace", false, "Trace the program execution")
 	asmFile := flag.String("asm", "", "Execute a Run Assembly Program")
+	size := flag.Int("stacksize", 1024, "Fixed size of execution stack")
 	flag.Parse()
+
 	// sum:
 	//		load x
 	//		load y
@@ -32,10 +35,10 @@ func main() {
 
 	dat, err := ioutil.ReadFile(path)
 	if err != nil {
-		fmt.Println("FileError: Couldn't open file ", path)
+		fmt.Println("FileError: couldn't open file ", path)
 	}
 
 	program := vm.Assemble(string(dat))
-	runner := vm.NewRunner(program, 10, 0, *trace)
+	runner := vm.NewRunner(program, *size, *main, *trace)
 	runner.Run()
 }

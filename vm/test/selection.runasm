@@ -1,0 +1,12 @@
+
+end:
+    print
+    halt
+
+
+const 4
+const 2
+div
+const 2
+ifeq 0
+halt

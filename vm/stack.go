@@ -59,8 +59,8 @@ func NewStack(size int) *Stack {
 // Push puts an item on the top of the stack
 // Stack grows downwards
 func (s *Stack) Push(item Value) Value {
-	s.pointer++
-	if s.pointer < len(s.data) {
+	if s.pointer < len(s.data)-1 {
+		s.pointer++
 		s.data[s.pointer] = item
 		return item
 	}
@@ -86,7 +86,10 @@ func (s *Stack) Pop() Value {
 // without popping it off
 func (s *Stack) Peek() Value {
 	// Always return valid
-	return s.data[s.pointer]
+	if s.pointer > -1 {
+		return s.data[s.pointer]
+	}
+	return Nil
 }
 
 // Store takes an address, pops item off stack then stores

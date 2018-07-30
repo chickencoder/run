@@ -1,0 +1,9 @@
+# function call example
+
+hello:
+    const "Hello World!"
+    ret
+
+call 0 0
+print
+halt

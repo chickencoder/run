@@ -14,6 +14,8 @@ import (
 // then the label is replaced with the current ip and all instances
 // of that label are replaced by the literal address
 
+var labels = map[string]int{}
+
 var instructionOperand = map[string]int{
 	"halt":   0,
 	"const":  1,
@@ -29,11 +31,11 @@ var instructionOperand = map[string]int{
 	"and":    0,
 	"or":     0,
 	"xor":    0,
-	"ifeq":   0,
-	"lt":     0,
-	"lte":    0,
-	"gt":     0,
-	"gte":    0,
+	"ifeq":   1,
+	"lt":     1,
+	"lte":    1,
+	"gt":     1,
+	"gte":    1,
 	"goto":   1,
 	"print":  0, // temporary instruction
 	"call":   2,
@@ -78,18 +80,11 @@ func isNotQuote(char string) bool {
 
 func tokenize(source string) []string {
 	var tokens []string
+	var ip int
 	current := 0
 
-	// Remove commented lines
-	lines := strings.Split(source, "\n")
-	for _, line := range lines {
-		if strings.HasPrefix(line, "#") {
-			source = strings.Replace(source, line, "", -1)
-		}
-	}
-
 	// Remove unecessary whitespace
-	source = strings.Replace(source, "\n", " ", -1)
+	source = strings.Replace(source, "\n", " ; ", -1)
 	source = strings.Replace(source, "\t", " ", -1)
 	source += "\n"
 
@@ -97,6 +92,23 @@ func tokenize(source string) []string {
 		char := string([]rune(source)[current])
 
 		if char == " " {
+			current++
+			continue
+		}
+
+		if char == ";" {
+			ip++
+			current++
+			continue
+		}
+
+		if char == "#" {
+			current++
+			for char != ";" {
+				current++
+				char = string([]rune(source)[current])
+			}
+
 			current++
 			continue
 		}
@@ -129,7 +141,13 @@ func tokenize(source string) []string {
 				char = string([]rune(source)[current])
 			}
 
-			tokens = append(tokens, value)
+			if strings.HasSuffix(value, ":") {
+				label := strings.TrimSuffix(value, ":")
+				labels[label] = ip
+			} else {
+				tokens = append(tokens, value)
+			}
+
 			continue
 		}
 		break
@@ -173,23 +191,21 @@ func Assemble(source string) []*Instruction {
 	var count int
 	tokens := tokenize(source)
 
+	// Replace labels through entire program
+	for label, ip := range labels {
+		for index, token := range tokens {
+			if label == token {
+				tokens[index] = strconv.Itoa(ip)
+			}
+		}
+	}
+
+	fmt.Println(tokens)
+
 	for count < len(tokens) {
 		// Only increment ip once we've successfully
 		// consumed an instruction
 		token := tokens[count]
-
-		// Is token a label
-		if strings.HasSuffix(token, ":") {
-			label := strings.TrimSuffix(token, ":")
-			address := strconv.Itoa(ip)
-
-			// Replace all instances of label with literal address
-			for i, item := range tokens {
-				if item == label {
-					tokens[i] = address
-				}
-			}
-		}
 
 		// Is token an opcode
 		if indexOf(token, Instructions) != -1 {

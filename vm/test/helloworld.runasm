@@ -1,0 +1,3 @@
+const "Hello World"
+print
+halt
