@@ -1,4 +1,6 @@
-# Run 
+<div align="center">
+    <img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/198/runner_1f3c3.png" width="140">
+</div>
 
 **Run** :runner: is a procedural scripting language intended for writing quick programs to automate tasks and to carry out general purpose computation. Run is designed to be obvious to read, write and run.
 
